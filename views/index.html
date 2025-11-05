@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clover Store</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+
+  <!-- Navbar -->
+  <nav class="flex justify-between items-center px-8 py-4 bg-white shadow-md fixed w-full top-0 z-50">
+    <h1 class="text-2xl font-semibold tracking-wide">Clover Store</h1>
+    <ul class="flex gap-6">
+      <li><a href="#" class="hover:text-gray-500">Home</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="relative h-[400px] flex flex-col justify-center text-center mt-16 overflow-hidden">
+    <!-- Background -->
+    <img 
+      src="https://images.unsplash.com/photo-1521334884684-d80222895322?auto=format&fit=crop&w=1600&q=80" 
+      alt="Hero Banner" 
+      class="absolute inset-0 w-full h-full object-cover"
+    >
+    <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+
+    <!-- Search & Filter (Overlay di atas Hero) -->
+    <div class="absolute top-10 w-full flex justify-center items-center px-6">
+      <div class="relative w-full max-w-3xl">
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Search products..." 
+          class="w-full py-3 px-6 pr-14 rounded-full shadow-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-300"
+        />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="gray" class="w-6 h-6 absolute right-4 top-3.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.35-4.35m0 0A7.5 7.5 0 1 0 4.5 4.5a7.5 7.5 0 0 0 12.15 12.15Z" />
+        </svg>
+      </div>
+
+      <select 
+        id="filterCategory" 
+        class="ml-4 w-40 py-3 px-4 rounded-lg border border-gray-200 shadow-md focus:outline-none focus:ring-2 focus:ring-gray-300 bg-white text-gray-700"
+      >
+        <option value="all">All Categories</option>
+        <option value="shirt">Shirts</option>
+        <option value="shoes">Shoes</option>
+        <option value="bag">Bags</option>
+        <option value="coat">Coats</option>
+      </select>
+    </div>
+
+    <!-- Hero Text -->
+    <div class="relative z-10 mt-28 text-white">
+      <h2 class="text-4xl font-bold mb-2">Clover Essentials</h2>
+      <p class="text-lg">Outfit of the Century • Simple • Timeless</p>
+    </div>
+  </section>
+
+  <!-- Product Table -->
+  <section class="max-w-6xl mx-auto px-6 mb-16 mt-10 overflow-x-auto">
+    <table class="min-w-full bg-white shadow-sm rounded-xl overflow-hidden">
+      <thead class="bg-gray-200 text-gray-700">
+        <tr>
+          <th class="py-3 px-4 text-left">Image</th>
+          <th class="py-3 px-4 text-left">Name</th>
+          <th class="py-3 px-4 text-left">Category</th>
+          <th class="py-3 px-4 text-left">Price</th>
+          <th class="py-3 px-4 text-left">Stock</th>
+          <th class="py-3 px-4 text-left">Action</th>
+        </tr>
+      </thead>
+      <tbody id="productTable">
+        <tr class="border-b hover:bg-gray-50 transition product" data-name="classic white shirt" data-category="shirt">
+          <td class="py-3 px-4"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkqDA1OklbF7-ld3-hz17wLF17gvPRxm7C2Q&s" class="w-20 h-20 object-cover rounded"></td>
+          <td class="py-3 px-4">Classic White Shirt</td>
+          <td class="py-3 px-4">Shirt</td>
+          <td class="py-3 px-4">Rp 250.000</td>
+          <td class="py-3 px-4">12 pcs</td>
+          <td class="py-3 px-4">
+            <button class="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-700 transition">Detail</button>
+          </td>
+        </tr>
+
+        <tr class="border-b hover:bg-gray-50 transition product" data-name="minimalist sneakers" data-category="shoes">
+          <td class="py-3 px-4"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkqDA1OklbF7-ld3-hz17wLF17gvPRxm7C2Q&s" class="w-20 h-20 object-cover rounded"></td>
+          <td class="py-3 px-4">Minimalist Sneakers</td>
+          <td class="py-3 px-4">Shoes</td>
+          <td class="py-3 px-4">Rp 480.000</td>
+          <td class="py-3 px-4">8 pcs</td>
+          <td class="py-3 px-4">
+            <button class="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-700 transition">Detail</button>
+          </td>
+        </tr>
+
+        <tr class="border-b hover:bg-gray-50 transition product" data-name="black leather bag" data-category="bag">
+          <td class="py-3 px-4"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkqDA1OklbF7-ld3-hz17wLF17gvPRxm7C2Q&s" class="w-20 h-20 object-cover rounded"></td>
+          <td class="py-3 px-4">Black Leather Bag</td>
+          <td class="py-3 px-4">Bag</td>
+          <td class="py-3 px-4">Rp 650.000</td>
+          <td class="py-3 px-4">5 pcs</td>
+          <td class="py-3 px-4">
+            <button class="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-700 transition">Detail</button>
+          </td>
+        </tr>
+
+        <tr class="border-b hover:bg-gray-50 transition product" data-name="gray wool coat" data-category="coat">
+          <td class="py-3 px-4"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkqDA1OklbF7-ld3-hz17wLF17gvPRxm7C2Q&s" class="w-20 h-20 object-cover rounded"></td>
+          <td class="py-3 px-4">Gray Wool Coat</td>
+          <td class="py-3 px-4">Coat</td>
+          <td class="py-3 px-4">Rp 820.000</td>
+          <td class="py-3 px-4">3 pcs</td>
+          <td class="py-3 px-4">
+            <button class="bg-gray-900 text-white px-4 py-2 rounded hover:bg-gray-700 transition">Detail</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Footer -->
+  <footer class="text-center py-6 border-t text-gray-500 text-sm">
+    © 2025 Clover Store. All rights reserved.
+  </footer>
+
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const filterCategory = document.getElementById('filterCategory');
+    const products = document.querySelectorAll('.product');
+
+    function filterProducts() {
+      const searchValue = searchInput.value.toLowerCase();
+      const selectedCategory = filterCategory.value;
+
+      products.forEach(product => {
+        const name = product.dataset.name.toLowerCase();
+        const category = product.dataset.category;
+
+        const matchesSearch = name.includes(searchValue);
+        const matchesCategory = selectedCategory === 'all' || category === selectedCategory;
+
+        product.style.display = matchesSearch && matchesCategory ? '' : 'none';
+      });
+    }
+
+    searchInput.addEventListener('input', filterProducts);
+    filterCategory.addEventListener('change', filterProducts);
+  </script>
+
+</body>
+</html>
