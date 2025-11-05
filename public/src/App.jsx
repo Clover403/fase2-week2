@@ -1,20 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/HomePage";
-import Login from "./components/Login";
-import Register from "./components/Register";
 import ProductDetail from "./components/PublicDetail";
-import Product from "./components/Products"
-import { NavLink } from "react-router-dom";
+
 
 export default function App() {
   return (
     <BrowserRouter>
-    <NavLink></NavLink>
+    {/* <NavLink></NavLink> */}
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/Products" element={<Product />} />
-        <Route path="/addStaff" element={<Register />} />
         <Route path="/products/:id" element={<ProductDetail />} />
 
       </Routes>

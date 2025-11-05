@@ -12,6 +12,7 @@ export default function Home({ setPage }) {
   async function fetchProducts() {
     try {
       setLoading(true);
+      // const { data } = await axios.get(`https://clover.web.id/publik`);
       const { data } = await axios.get(`https://api.p2.gc01aio.foxhub.space/apis/pub/products/products?limit=12&q=${search}`);
       setProducts(data.data); // menaruh hasilnya ke state
     } catch (err) {
@@ -25,6 +26,8 @@ export default function Home({ setPage }) {
   useEffect(() => {
     fetchProducts();
   }, [search]);
+
+  //PROTECTED ROUTES
 
   return (
     <div className="bg-gray-100 text-gray-800 font-sans">
