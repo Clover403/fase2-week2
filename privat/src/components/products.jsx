@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Navbar from "./Navbar";
 
 export default function Home({ setPage }) {
   const [products, setProducts] = useState([]);
@@ -108,24 +109,25 @@ export default function Home({ setPage }) {
                     <div className="flex gap-2">
                       <button
                         onClick={() => navigate(`/products/${product.id}`)}
-                        className="bg-black text-white px-3 py-1.5 rounded-md hover:bg-blue-700 transition text-sm font-medium shadow"
+                        className="bg-gray-300 text-gray-800 px-3 py-1.5 rounded-md hover:bg-gray-400 transition text-sm font-medium shadow"
                       >
                         Detail
                       </button>
                       <button
                         onClick={() => navigate(`/products/Edit/${product.id}`)}
-                        className="bg-black text-white px-3 py-1.5 rounded-md hover:bg-yellow-600 transition text-sm font-medium shadow"
+                        className="bg-gray-400 text-white px-3 py-1.5 rounded-md hover:bg-gray-500 transition text-sm font-medium shadow"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => navigate(`/products/Delete/${product.id}`)}
-                        className="bg-black text-white px-3 py-1.5 rounded-md hover:bg-red-700 transition text-sm font-medium shadow"
+                        className="bg-gray-500 text-white px-3 py-1.5 rounded-md hover:bg-gray-600 transition text-sm font-medium shadow"
                       >
                         Delete
                       </button>
                     </div>
                   </td>
+
                 </tr>
               ))}
             </tbody>

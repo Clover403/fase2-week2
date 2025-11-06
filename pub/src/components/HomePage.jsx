@@ -1,19 +1,14 @@
- const API_URL = `https://api.p2.gc01aio.foxhub.space/apis/pub/products/products?limit=${limit}${pageQuery}${categoryQuery}&q=${search}`;
-
-
-=== HOMEPAGE YANG ADA SORT NYA ===
-
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
 // Data dummy untuk opsi kategori
 const CATEGORIES = [
-  { id: 'all', name: 'All Categories' },
-  { id: 'electronics', name: 'Electronics' },
-  { id: 'fashion', name: 'Fashion' },
-  { id: 'home', name: 'Home & Living' },
-  { id: 'books', name: 'Books' },
+  { id: 1, name: 'All Categories' },
+  { id: 2, name: 'Electronics' },
+  { id: 3, name: 'Fashion' },
+  { id: 4, name: 'Home & Living' },
+  { id: 5, name: 'Books' },
 ];
 
 export default function Home() {
@@ -49,11 +44,13 @@ export default function Home() {
       setLoading(true);
 
       // 1. BUAT QUERY PARAMETERS DINAMIS
-      let categoryQuery = category !== 'all' ? `&category=${category}` : '';
+      let categoryQuery = `&filter=${category}`
       let pageQuery = `&page=${page}`;
       let sortQuery = sort ? `&sort=${sort}` : '';
 
-      const API_URL = `https://api.p2.gc01aio.foxhub.space/apis/pub/products/products?limit=${limit}${pageQuery}${categoryQuery}${sortQuery}&q=${search}`;
+      
+      const API_URL = `https://api.p2.gc01aio.foxhub.space/apis/pub/products/products?limit=${limit}${pageQuery}${sortQuery}${categoryQuery}&q=${search}`;
+      console.log("Fetching:", API_URL, "Category:", category);
       const { data } = await axios.get(API_URL);
 
       setProducts(data.data);
@@ -90,42 +87,22 @@ export default function Home() {
 
       {/* Navbar */}
       <nav className="flex justify-between items-center px-8 py-4 bg-white shadow-md fixed w-full top-0 z-50">
-  <h1 className="text-2xl font-semibold tracking-wide">Clover Store</h1>
-
-  {/* Bagian kanan navbar: Search + Filter + Sort */}
-  <div className="flex items-center gap-3">
-
-    {/* Filter */}
-    <select
-      value={category}
-      onChange={(e) => {
-        setCategory(e.target.value);
-        setPage(1);
-      }}
-      className="bg-gray-100 text-gray-800 border border-gray-300 rounded-full px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
-    >
-      {CATEGORIES.map(cat => (
-        <option key={cat.id} value={cat.id}>{cat.name}</option>
-      ))}
-    </select>
-
-    {/* Sort */}
-    <select
-      value={sort}
-      onChange={(e) => {
-        setSort(e.target.value);
-        setPage(1);
-      }}
-      className="bg-gray-100 text-gray-800 border border-gray-300 rounded-full px-4 py-2 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
-    >
-      <option value="">Sort By</option>
-      <option value="price_asc">Price: Low to High</option>
-      <option value="price_desc">Price: High to Low</option>
-      <option value="newest">Newest</option>
-    </select>
-  </div>
-</nav>
-
+        <h1 className="text-2xl font-semibold tracking-wide">Clover Store</h1>
+        {/* Sort */}
+        <select
+          value={sort}
+          onChange={(e) => {
+            setSort(e.target.value);
+            setPage(1);
+          }}
+          className="w-36 bg-white text-gray-800 border border-gray-300 rounded-full px-4 py-3 shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+        >
+          <option value="">Sort By</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+          <option value="newest">Newest</option>
+        </select>
+      </nav>
 
       {/* Hero Section */}
       <section className="relative h-[400px] flex items-center justify-center text-center mt-16">
@@ -159,7 +136,19 @@ export default function Home() {
             </svg>
           </div>
 
-          
+          {/* Filter */}
+          <select
+            value={category}
+            onChange={(e) => {
+              setCategory(e.target.value);
+              setPage(1);
+            }}
+            className="w-36 bg-white text-gray-800 border border-gray-300 rounded-full px-4 py-3 shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400"
+          >
+            {CATEGORIES.map(cat => (
+              <option key={cat.id} value={cat.id}>{cat.name}</option>
+            ))}
+          </select>
         </div>
 
       </section>
