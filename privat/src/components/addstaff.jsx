@@ -12,23 +12,37 @@ export default function Register() {
     phone: "",
   });
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(" Data yang dikirim:", formData); // DEBUG: lihat data sebelum dikirim
+
     try {
       const { data } = await axios.post(
-        "https://api.p2.gc01aio.foxhub.space/apis/pub/register",
-        formData
+        "https://api.p2.gc01aio.foxhub.space/apis/auth/add-user",
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
-      console.log("Response:", data);
 
-      // langsung pindah ke halaman login
-      navigate("/");
+      console.log(" Response dari server:", data);
+
+      alert("Registrasi berhasil!");
+      navigate("/login"); // pindah ke halaman login
     } catch (error) {
-      console.error("Registrasi gagal:", error);
+      if (error.response) {
+        console.error(" Gagal registrasi:", error.response.data);
+        alert("Registrasi gagal: " + error.response.data.message);
+      } else {
+        console.error(" Error lain:", error);
+        alert("Terjadi kesalahan di sisi client.");
+      }
     }
   };
 
@@ -41,30 +55,81 @@ export default function Register() {
       <section className="flex justify-center items-center min-h-screen -mt-20">
         <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md border border-gray-200">
           <h2 className="text-2xl font-bold text-center mb-6">Create an Account</h2>
+
           <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Username */}
             <div>
               <label htmlFor="username" className="block text-sm font-medium text-gray-600 mb-1">Username</label>
-              <input type="text" id="username" name="username" placeholder="Enter your username" required value={formData.username} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 transition" />
+              <input
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter your username"
+                required
+                value={formData.username}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 transition"
+              />
             </div>
 
+            {/* Email */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-600 mb-1">Email</label>
-              <input type="email" id="email" name="email" placeholder="you@example.com" required value={formData.email} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 transition" />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="you@example.com"
+                required
+                value={formData.email}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 transition"
+              />
             </div>
 
+            {/* Password */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-600 mb-1">Password</label>
-              <input type="password" id="password" name="password" placeholder="••••••••" required value={formData.password} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 transition" />
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="••••••••"
+                required
+                value={formData.password}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 transition"
+              />
             </div>
 
+            {/* Address */}
             <div>
               <label htmlFor="address" className="block text-sm font-medium text-gray-600 mb-1">Address</label>
-              <textarea id="address" name="address" rows="2" placeholder="Your full address" required value={formData.address} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 transition"></textarea>
+              <textarea
+                id="address"
+                name="address"
+                rows="2"
+                placeholder="Your full address"
+                required
+                value={formData.address}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 transition"
+              ></textarea>
             </div>
 
+            {/* Phone */}
             <div>
               <label htmlFor="phone" className="block text-sm font-medium text-gray-600 mb-1">Phone Number</label>
-              <input type="tel" id="phone" name="phone" placeholder="08123456789" required value={formData.phone} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 transition" />
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="08123456789"
+                required
+                value={formData.phone}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-600 transition"
+              />
             </div>
 
             <button type="submit" className="w-full bg-gray-900 text-white py-2 rounded-lg font-medium hover:bg-gray-700 transition">
@@ -73,7 +138,7 @@ export default function Register() {
 
             <p className="text-sm text-center text-gray-500 mt-4">
               Sudah punya akun?{" "}
-              <a href="#" className="text-gray-700 hover:underline">Login di sini</a>
+              <a href="/login" className="text-gray-700 hover:underline">Login di sini</a>
             </p>
           </form>
         </div>
@@ -85,4 +150,3 @@ export default function Register() {
     </div>
   );
 }
-

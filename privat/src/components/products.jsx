@@ -16,6 +16,27 @@ export default function Home({ setPage }) {
   //   }
   // }, [navigate]);
 
+  async function handleDelete(id) {
+    try {
+      const token = localStorage.getItem("access_token");
+      console.log("menghapus produk dengan id:", id);
+
+      await axios.delete(
+        `https://api.p2.gc01aio.foxhub.space/apis/products/products/:${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("berhasil delete produk");
+    } catch (error) {}
+    console.error(
+      "gagal menghapus product",
+      error.response?.data || error.message
+    );
+  }
+
   async function fetchProducts() {
     try {
       setLoading(true);
@@ -127,14 +148,13 @@ export default function Home({ setPage }) {
                         Edit
                       </button>
                       <button
-                        onClick={() => navigate(`/products/Delete/${product.id}`)}
+                        onClick={() => handleDelete(product.id)}
                         className="bg-gray-500 text-white px-3 py-1.5 rounded-md hover:bg-gray-600 transition text-sm font-medium shadow"
                       >
                         Delete
                       </button>
                     </div>
                   </td>
-
                 </tr>
               ))}
             </tbody>
