@@ -67,9 +67,9 @@ export default function AddProduct() {
   };
 
   return (
-    <div className="bg-gray-100 text-gray-800 font-sans min-h-screen">
+    <div className="bg-gray-100 text-gray-800 font-sans min-h-screen -pb-8">
       <Navbar />
-      <section className="flex justify-center items-center min-h-screen -mt-20">
+      <section className="flex justify-center items-center h-[calc(100vh-80px)] relative top-10">
         <div className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md border border-gray-200">
           <h2 className="text-2xl font-bold text-center mb-6">Add Product</h2>
 

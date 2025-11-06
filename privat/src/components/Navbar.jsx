@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function Navbar({ setPage }) {
+export default function Navbar() {
+  const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
 
   // Cek role user dari token
@@ -26,30 +28,30 @@ export default function Navbar({ setPage }) {
     }
   }, []);
 
-  async function handleLogout() {
+  function handleLogout() {
     localStorage.clear();
-    setPage("login");
+    navigate("/login");
   }
 
   return (
     <nav className="flex justify-between items-center px-8 py-4 bg-white shadow-md fixed w-full top-0 z-50 border-b border-gray-200">
       <h1
         className="text-2xl font-semibold tracking-wide cursor-pointer"
-        onClick={() => setPage("home")}
+        onClick={() => navigate("/")}
       >
         Clover Store
       </h1>
 
       <div className="flex items-center gap-6">
         <button
-          onClick={() => setPage("home")}
+          onClick={() => navigate("/")}
           className="text-gray-700 font-medium hover:text-gray-500 transition"
         >
           Home
         </button>
 
         <button
-          onClick={() => setPage("add")}
+          onClick={() => navigate("/addProduct")}
           className="text-gray-700 font-medium hover:text-gray-500 transition"
         >
           Add Product
@@ -57,7 +59,7 @@ export default function Navbar({ setPage }) {
 
         {isAdmin && (
           <button
-            onClick={() => setPage("addStaff")}
+            onClick={() => navigate("/addStaff")}
             className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-500 transition"
           >
             Add Staff
