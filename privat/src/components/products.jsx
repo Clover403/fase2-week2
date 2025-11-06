@@ -31,9 +31,10 @@ export default function Home({ setPage }) {
   return (
     <div className="bg-gray-100 text-gray-800 font-sans min-h-screen">
       {/* Navbar */}
-      <nav className="flex justify-between items-center px-8 py-4 bg-white shadow-md fixed w-full top-0 z-50">
+      {/* <nav className="flex justify-between items-center px-8 py-4 bg-white shadow-md fixed w-full top-0 z-50">
         <h1 className="text-2xl font-semibold tracking-wide">Clover Store</h1>
-      </nav>
+      </nav> */}
+      <Navbar/>
 
       {/* Hero Section */}
       <section className="relative h-[400px] flex items-center justify-center text-center mt-16">

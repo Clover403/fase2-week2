@@ -105,12 +105,12 @@ export default function Login({ setPage }) {
               )}
             </div>
 
-            <p className="text-sm text-center text-gray-500 mt-4">
+            {/* <p className="text-sm text-center text-gray-500 mt-4">
               Belum punya akun?{" "}
               <a href="#" className="text-gray-700 hover:underline">
                 Daftar di sini
               </a>
-            </p>
+            </p> */}
           </form>
         </div>
       </section>
