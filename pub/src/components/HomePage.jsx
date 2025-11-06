@@ -2,23 +2,23 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-// Data dummy untuk opsi kategori
+// Data dummy untuk opsi kategori (ID diubah menjadi string yang sesuai dengan filter API)
 const CATEGORIES = [
-  { id: 1, name: 'All Categories' },
-  { id: 2, name: 'Electronics' },
-  { id: 3, name: 'Fashion' },
-  { id: 4, name: 'Home & Living' },
-  { id: 5, name: 'Books' },
+  { id: "all", name: 'All Categories' },
+  { id: "Electronics", name: 'Electronics' },
+  { id: "sepatu", name: 'Fashion' },
+  { id: 3, name: 'Home & Living' },
+  { id: "Books", name: 'Books' },
 ];
 
 export default function Home() {
-  // --- STATE BARU UNTUK FILTER & PAGINATION ---
+  // --- STATE UNTUK FILTER & PAGINATION ---
   const [sort, setSort] = useState('');
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState([]); // Produk yang ditampilkan
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);         // Halaman saat ini (Dimulai dari 1)
-  const [limit] = useState(12);               // Batasan produk per halaman (Sesuai URL lama)
+  const [limit] = useState(12);               // Batasan produk per halaman
   const [category, setCategory] = useState('all'); // Filter kategori
   const [totalProducts, setTotalProducts] = useState(0); // Total keseluruhan produk dari server
 
@@ -43,34 +43,50 @@ export default function Home() {
     try {
       setLoading(true);
 
-      // 1. BUAT QUERY PARAMETERS DINAMIS
-      let categoryQuery = `&filter=${category}`
-      let pageQuery = `&page=${page}`;
-      let sortQuery = sort ? `&sort=${sort}` : '';
+      // Mulai dengan URL dasar pagination dan limit
+      let queryUrl = `https://api.p2.gc01aio.foxhub.space/apis/pub/products/products?limit=${limit}&page=${page}`;
 
+      // 1. Tambahkan Sortir (jika ada)
+      // if (sort === "az") fetched.sort((a, b) => a.title.localeCompare(b.title));
+      if (sort === "za") fetchProducts.sort((a, b) => b.title.localeCompare(a.title));
+      else if (sort === "low-high") fetchProducts.sort((a, b) => a.price - b.price);
+      else if (sort === "high-low") fetchProducts.sort((a, b) => b.price - a.price);
       
-      const API_URL = `https://api.p2.gc01aio.foxhub.space/apis/pub/products/products?limit=${limit}${pageQuery}${sortQuery}${categoryQuery}&q=${search}`;
-      console.log("Fetching:", API_URL, "Category:", category);
-      const { data } = await axios.get(API_URL);
+      // 2. Tambahkan Kategori (hanya jika BUKAN "all")
+      if (category !== 'all') {
+        // API diharapkan menerima parameter filter bernama 'category'
+        queryUrl += `&filter=${category}`; 
+      }
 
-      setProducts(data.data);
-      // Asumsi API mengembalikan total produk dalam metadata (Anda mungkin perlu menyesuaikan ini)
-      // Jika API Anda tidak mengembalikan total, pagination hanya akan berfungsi jika ada data.
-      setTotalProducts(data.totalProducts || 100);
+      // 3. Tambahkan Pencarian (jika ada)
+      if (search) {
+        queryUrl += `&q=${search}`;
+      }
+
+      console.log("Fetching URL:", queryUrl); // Cek URL yang dikirim
+
+      const { data } = await axios.get(queryUrl);
+
+      setProducts(data.data || []);
+      // Menggunakan totalProducts dari response, atau default 100 jika tidak ada
+      setTotalProducts(data.totalProducts || 100); 
 
     } catch (err) {
       console.error("Gagal mengambil data:", err);
+      setProducts([]); 
+      setTotalProducts(0);
     } finally {
       setLoading(false);
     }
   }
 
-  // Efek dijalankan setiap kali search, page, atau category berubah
+  // Efek dijalankan setiap kali search, page, category, atau sort berubah
   useEffect(() => {
-    fetchProducts();
+    // Memastikan fetchProducts dipanggil HANYA sekali per perubahan state
+    fetchProducts(); 
     // Scroll ke atas setiap kali ganti halaman/filter
     window.scrollTo(0, 0);
-  }, [search, page, category, sort]); // <-- WATCH TIGA STATE INI
+  }, [search, page, category, sort]); // <-- Dependensi yang benar
 
   // Handler untuk navigasi halaman
   const handleNextPage = () => {
@@ -93,14 +109,14 @@ export default function Home() {
           value={sort}
           onChange={(e) => {
             setSort(e.target.value);
-            setPage(1);
+            setPage(1); // Reset ke halaman 1 saat sorting berubah
           }}
           className="w-36 bg-white text-gray-800 border border-gray-300 rounded-full px-4 py-3 shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400"
         >
           <option value="">Sort By</option>
-          <option value="price_asc">Price: Low to High</option>
-          <option value="price_desc">Price: High to Low</option>
-          <option value="newest">Newest</option>
+          <option value="low-high">Price: Low High</option>
+          <option value="high-low">Price: High to Low</option>
+          {/* <option value="newest">Newest</option> */}
         </select>
       </nav>
 
@@ -118,7 +134,7 @@ export default function Home() {
           <p className="text-lg">Everyday Essentials • Stylish • Practical • Delightful</p>
         </div>
 
-        {/* Search & Filter + Sort */}
+        {/* Search & Filter */}
         <div className="absolute bottom-10 w-full flex justify-center px-6 gap-4">
 
           <div className="relative w-full max-w-xl flex items-center justify-center">
@@ -128,7 +144,7 @@ export default function Home() {
               className="w-full bg-white text-gray-800 border border-gray-300 rounded-full px-6 py-3 shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder-gray-500"
               onChange={(e) => {
                 setSearch(e.target.value);
-                setPage(1);
+                setPage(1); // Reset ke halaman 1 saat pencarian berubah
               }}
             />
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6 absolute right-4 text-gray-400">
@@ -136,12 +152,12 @@ export default function Home() {
             </svg>
           </div>
 
-          {/* Filter */}
+          {/* Filter Kategori */}
           <select
             value={category}
             onChange={(e) => {
               setCategory(e.target.value);
-              setPage(1);
+              setPage(1); // Reset ke halaman 1 saat kategori berubah
             }}
             className="w-36 bg-white text-gray-800 border border-gray-300 rounded-full px-4 py-3 shadow-md focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
@@ -205,7 +221,7 @@ export default function Home() {
         )}
       </section>
 
-      {/* 3. UI PAGINATION */}
+      {/* UI PAGINATION */}
       <div className="flex justify-center items-center py-8 gap-4">
 
         <button
@@ -219,7 +235,7 @@ export default function Home() {
           Back
         </button>
 
-        <span className="text-lg font-medium text-gray-700">Page {page}</span>
+        <span className="text-lg font-medium text-gray-700">Page {page} of {Math.ceil(totalProducts / limit)}</span>
 
         <button
           onClick={handleNextPage}

@@ -9,7 +9,13 @@ export default function Home({ setPage }) {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Ambil data dari server
+  //  useEffect(() => {
+  //   const token = localStorage.getItem("access_token");
+  //   if (!token) {
+  //     navigate("/login");
+  //   }
+  // }, [navigate]);
+
   async function fetchProducts() {
     try {
       setLoading(true);
@@ -34,7 +40,7 @@ export default function Home({ setPage }) {
       {/* <nav className="flex justify-between items-center px-8 py-4 bg-white shadow-md fixed w-full top-0 z-50">
         <h1 className="text-2xl font-semibold tracking-wide">Clover Store</h1>
       </nav> */}
-      <Navbar/>
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative h-[400px] flex items-center justify-center text-center mt-16">
