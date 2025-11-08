@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
+import Button from "./Button";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export default function Login({ setPage }) {
+export default function Login({}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showToken, setShowToken] = useState(false); // debug: tampilkan token sementara
+  const navigate = useNavigate();
 
   async function handleLogin(e) {
     e.preventDefault();
@@ -21,7 +24,8 @@ export default function Login({ setPage }) {
 
       if (!token) {
         console.error("Token tidak ditemukan pada response:", response);
-        alert("Login gagal: token tidak ditemukan.");
+        toast.error("Login Failed!");
+
         return;
       }
 
@@ -29,13 +33,11 @@ export default function Login({ setPage }) {
 
       console.log("access_token:", token);
 
-      setPage("home");
+      toast.success("Login Success!");
+      navigate("/");
     } catch (error) {
       console.error("Login error:", error);
-      alert(
-        error?.response?.data?.message ||
-          "Gagal login — cek email & password atau lihat console."
-      );
+      toast.error("Login Failed!");
     } finally {
       setLoading(false);
     }
@@ -48,7 +50,10 @@ export default function Login({ setPage }) {
           <h2 className="text-2xl font-bold text-center mb-6">Login to Clov</h2>
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-600 mb-1"
+              >
                 Email
               </label>
               <input
@@ -64,7 +69,10 @@ export default function Login({ setPage }) {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-600 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-600 mb-1"
+              >
                 Password
               </label>
               <input
@@ -79,38 +87,7 @@ export default function Login({ setPage }) {
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gray-900 text-white py-2 rounded-lg font-medium hover:bg-gray-700 transition disabled:opacity-60"
-            >
-              {loading ? "Logging in..." : "Login"}
-            </button>
-
-            {/* Debug: tombol untuk lihat token di UI (Hapus di production) */}
-            <div className="mt-3 text-center">
-              <button
-                type="button"
-                onClick={() => {
-                  setShowToken((s) => !s);
-                }}
-                className="text-sm text-gray-600 hover:underline"
-              >
-                {showToken ? "Hide token" : "Show token (debug)"}
-              </button>
-              {showToken && (
-                <pre className="mt-2 p-2 bg-gray-100 rounded text-xs break-words">
-                  {localStorage.getItem("access_token") || "(no token stored)"}
-                </pre>
-              )}
-            </div>
-
-            {/* <p className="text-sm text-center text-gray-500 mt-4">
-              Belum punya akun?{" "}
-              <a href="#" className="text-gray-700 hover:underline">
-                Daftar di sini
-              </a>
-            </p> */}
+            <Button property={"Login"}/>
           </form>
         </div>
       </section>

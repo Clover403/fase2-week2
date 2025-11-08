@@ -1,51 +1,63 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "./Navbar";
+import { toast } from "react-toastify";
 
-export default function Home({ setPage }) {
+export default function Home() {
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  //  useEffect(() => {
-  //   const token = localStorage.getItem("access_token");
-  //   if (!token) {
-  //     navigate("/login");
-  //   }
-  // }, [navigate]);
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
 
-  async function handleDelete(id) {
+  const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("access_token");
-      console.log("menghapus produk dengan id:", id);
 
       await axios.delete(
-        `https://api.p2.gc01aio.foxhub.space/apis/products/products/:${id}`,
+        `https://api.p2.gc01aio.foxhub.space/apis/products/products/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
-      console.log("berhasil delete produk");
-    } catch (error) {}
-    console.error(
-      "gagal menghapus product",
-      error.response?.data || error.message
-    );
-  }
+
+      toast.success("Succeed Deleted!");
+
+      //  Update state agar produk langsung hilang dari UI
+      setProducts((prevProducts) => prevProducts.filter((p) => p.id !== id));
+    } catch (error) {
+      console.error("Gagal hapus produk:", error);
+      toast.error("Succeed Deleted!");
+    }
+  };
 
   async function fetchProducts() {
     try {
       setLoading(true);
+      const token = localStorage.getItem("access_token");
+
       const { data } = await axios.get(
-        `https://api.p2.gc01aio.foxhub.space/apis/pub/products/products?limit=12&q=${search}`
+        `https://api.p2.gc01aio.foxhub.space/apis/products/products/`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setProducts(data.data);
+      setFilteredProducts(data.data);
     } catch (err) {
       console.error("Gagal mengambil data:", err);
+      toast.error(err.response.data.message || "terjadi kesalahan ");
     } finally {
       setLoading(false);
     }
@@ -53,16 +65,17 @@ export default function Home({ setPage }) {
 
   useEffect(() => {
     fetchProducts();
-  }, [search]);
+  }, []);
 
+  //  Filter frontend
+  useEffect(() => {
+    const filtered = products.filter((p) =>
+      p.name.toLowerCase().includes(search.toLowerCase())
+    );
+    setFilteredProducts(filtered);
+  }, [search, products]);
   return (
     <div className="bg-gray-100 text-gray-800 font-sans min-h-screen">
-      {/* Navbar */}
-      {/* <nav className="flex justify-between items-center px-8 py-4 bg-white shadow-md fixed w-full top-0 z-50">
-        <h1 className="text-2xl font-semibold tracking-wide">Clover Store</h1>
-      </nav> */}
-      <Navbar />
-
       {/* Hero Section */}
       <section className="relative h-[400px] flex items-center justify-center text-center mt-16">
         <img
@@ -78,7 +91,7 @@ export default function Home({ setPage }) {
         </div>
 
         {/* Search */}
-        <div className="absolute top-6 w-full flex justify-center px-6">
+        <div className="absolute top-7 w-full flex justify-center px-6">
           <div className="relative w-full max-w-3xl flex items-center justify-center">
             <input
               type="text"
@@ -113,7 +126,7 @@ export default function Home({ setPage }) {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {filteredProducts.map((product) => (
                 <tr
                   key={product.id}
                   className="border-b hover:bg-gray-50 transition"
@@ -127,7 +140,7 @@ export default function Home({ setPage }) {
                   </td>
                   <td className="py-3 px-4">{product.name}</td>
                   <td className="py-3 px-4 capitalize">
-                    {product.Category?.name || "-"}
+                    {product.category.name || "-"}
                   </td>
                   <td className="py-3 px-4">
                     Rp {product.price?.toLocaleString("id-ID")}
@@ -142,7 +155,7 @@ export default function Home({ setPage }) {
                         Detail
                       </button>
                       <button
-                        onClick={() => navigate(`/products/Edit/${product.id}`)}
+                        onClick={() => navigate(`/products/edit/${product.id}`)}
                         className="bg-gray-400 text-white px-3 py-1.5 rounded-md hover:bg-gray-500 transition text-sm font-medium shadow"
                       >
                         Edit

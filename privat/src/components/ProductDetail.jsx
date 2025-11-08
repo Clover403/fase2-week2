@@ -18,13 +18,15 @@ export default function ProductDetail() {
           `https://api.p2.gc01aio.foxhub.space/apis/pub/products/products/${id}`
         )
         setProduct(res.data.data)
+        console.log(res);
+        
       } catch (err) {
         console.error("Error fetching product:", err)
       } finally {
         setLoading(false)
       }
     }
-
+    
     fetchProduct()
   }, [id])
 
@@ -64,7 +66,7 @@ export default function ProductDetail() {
         <div className="md:w-1/2 w-full p-8 flex flex-col justify-between">
           <div>
             <h2 className="text-3xl font-bold mb-3">{product.name}</h2>
-            <p className="text-gray-500 mb-4">{product.Category?.name}</p>
+            <p className="text-gray-500 mb-4">Category: {product.category.name}</p>
             <p className="text-2xl font-semibold text-gray-900 mb-6">
               Rp {product.price.toLocaleString("id-ID")}
             </p>
@@ -75,35 +77,14 @@ export default function ProductDetail() {
           </div>
 
           <div className="flex items-center gap-4 mt-6">
-            <div className="flex items-center border rounded-full px-3 py-1">
-              <button
-                onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                className="px-2 text-gray-600 text-xl"
-              >
-                −
-              </button>
-              <span className="px-4 text-lg">{quantity}</span>
-              <button
-                onClick={() => setQuantity((q) => q + 1)}
-                className="px-2 text-gray-600 text-xl"
-              >
-                +
-              </button>
-            </div>
 
-            <button className="bg-gray-900 text-white px-6 py-3 rounded-full font-medium hover:bg-gray-700 transition-all">
-              Add to Cart
+            <button onClick={() => navigate("/")} className="bg-gray-900 text-white px-6 py-3 rounded-full font-medium hover:bg-gray-700 transition-all">
+              ← Back to Home
             </button>
           </div>
         </div>
       </div>
 
-      <button
-        onClick={() => navigate(-1)}
-        className="mt-10 text-gray-500 hover:text-gray-800 transition"
-      >
-        ← Back to Products
-      </button>
     </div>
   )
 }

@@ -1,1 +1,32 @@
 @import "tailwindcss";
+/* === Custom Toastify Style === */
+.Toastify__toast {
+  border-radius: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.Toastify__toast--success {
+  background: #16a34a; /* hijau lembut */
+  color: #fff;
+}
+
+.Toastify__toast--error {
+  background: #dc2626; /* merah soft */
+  color: #fff;
+}
+
+.Toastify__toast--info {
+  background: #2563eb; /* biru kalem */
+  color: #fff;
+}
+
+.Toastify__toast--warning {
+  background: #facc15; /* kuning pastel */
+  color: #000;
+}
+
+.Toastify__progress-bar {
+  background: rgba(255, 255, 255, 0.7);
+}

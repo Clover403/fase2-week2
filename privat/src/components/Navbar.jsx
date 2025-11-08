@@ -19,7 +19,8 @@ export default function Navbar() {
             .join("")
         );
         const decoded = JSON.parse(jsonPayload);
-        if (decoded.role === "admin") {
+         console.log("Decoded JWT:", decoded);
+        if (decoded.role === "Admin") {
           setIsAdmin(true);
         }
       } catch (err) {
@@ -45,14 +46,14 @@ export default function Navbar() {
       <div className="flex items-center gap-6">
         <button
           onClick={() => navigate("/")}
-          className="text-gray-700 font-medium hover:text-gray-500 transition"
+          className="text-gray-700 font-medium px-5 py-2 rounded-full hover:bg-gray-300 hover:text-white transition"
         >
           Home
         </button>
 
         <button
-          onClick={() => navigate("/addProduct")}
-          className="text-gray-700 font-medium hover:text-gray-500 transition"
+          onClick={() => navigate("products/add")}
+          className="text-gray-700 font-medium px-5 py-2 rounded-full hover:bg-gray-300 hover:text-white transition"
         >
           Add Product
         </button>
@@ -60,7 +61,7 @@ export default function Navbar() {
         {isAdmin && (
           <button
             onClick={() => navigate("/addStaff")}
-            className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-500 transition"
+            className="text-gray-700 font-medium px-5 py-2 rounded-full hover:bg-gray-300 hover:text-white transition"
           >
             Add Staff
           </button>
@@ -68,7 +69,7 @@ export default function Navbar() {
 
         <button
           onClick={handleLogout}
-          className="bg-gray-900 text-white px-5 py-2 rounded-full hover:bg-gray-700 transition"
+          className="bg-gray-600 text-white px-5 py-2 rounded-full hover:bg-gray-400 transition"
         >
           Logout
         </button>
