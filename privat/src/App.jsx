@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "./index.css"; // 🔥 custom style kamu
+import "./index.css"; // 
 
 import BaseLayout from "./components/BaseLayout";
-import LoginPage from "./components/Login";
-import Products from "./components/products";
-import ProductDetail from "./components/ProductDetail";
-import AddStaff from "./components/addstaff";
-import AddForm from "./components/addForm"; // ✅ Halaman Add lengkap
-import EditForm from "./components/editForm";
+import LoginPage from "./views/Login";
+import Products from "./views/products";
+import ProductDetail from "./views/ProductDetail";
+import AddStaff from "./views/addstaff";
+import AddForm from "./views/addForm"; // ✅ Halaman Add lengkap
+import EditForm from "./views/editForm";
 
 export default function App() {
   return (
@@ -21,7 +21,7 @@ export default function App() {
         newestOnTop
         closeOnClick
         pauseOnHover
-        draggable
+        
       />
 
       <BrowserRouter>
@@ -33,8 +33,6 @@ export default function App() {
             <Route path="/addStaff" element={<AddStaff />} />
             <Route path="/products/add" element={<AddForm />} />
             <Route path="/products/edit/:id" element={<EditForm />} />
-            {/* <Route path="/products/add" element={<ProductForm />} /> */}
-            {/* <Route path="/products/edit/:id" element={<ProductForm />} /> */}
           </Route>
         </Routes>
       </BrowserRouter>

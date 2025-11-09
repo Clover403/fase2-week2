@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import Navbar from "./Navbar";
-import Form from "./Form";
+import Navbar from "../components/Navbar";
+import Form from "../components/Form";
 
 export default function EditForm() {
   const { id } = useParams();

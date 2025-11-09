@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Navbar from "./Navbar";
-import ProductForm from "./Form";
+import Navbar from "../components/Navbar";
+import ProductForm from "../components/Form";
 
 export default function AddForm() {
   const navigate = useNavigate();
