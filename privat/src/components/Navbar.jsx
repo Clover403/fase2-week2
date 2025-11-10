@@ -57,6 +57,12 @@ export default function Navbar() {
         >
           Add Product
         </button>
+         <button
+          onClick={() => navigate("/category")}
+          className="text-gray-700 font-medium px-5 py-2 rounded-full hover:bg-gray-300 hover:text-white transition"
+        >
+          List category
+        </button>
 
         {isAdmin && (
           <button
